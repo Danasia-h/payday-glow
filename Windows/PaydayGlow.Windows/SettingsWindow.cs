@@ -20,6 +20,7 @@ internal sealed class SettingsWindow : Window
     {
         Title = "PaydayGlow · 工资设置"; Width = 550; SizeToContent = SizeToContent.Height;
         ResizeMode = ResizeMode.NoResize; WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        MaxHeight = Math.Max(350, SystemParameters.WorkArea.Height - 24);
         Background = Theme.Paper; FontFamily = new FontFamily("Microsoft YaHei UI, Segoe UI");
         var body = new StackPanel { Margin = new Thickness(27, 22, 27, 24) };
         body.Children.Add(Theme.Text("设置你的赚钱时钟", 23, bold: true));
@@ -60,7 +61,12 @@ internal sealed class SettingsWindow : Window
             Close();
         }, true);
         SaveButton.IsDefault = true; SaveButton.HorizontalAlignment = HorizontalAlignment.Right; buttons.Children.Add(SaveButton);
-        body.Children.Add(buttons); Content = body;
+        body.Children.Add(buttons);
+        Content = new Border
+        {
+            Background = Theme.Paper,
+            Child = new ScrollViewer { Content = body, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled }
+        };
     }
     private void BreakEnabled(bool enabled) { breakStart.IsEnabled = enabled; breakEnd.IsEnabled = enabled; }
     private static TextBox Field(string text, double size = 15) => new()
