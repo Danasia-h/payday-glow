@@ -13,6 +13,7 @@ New-Item -ItemType Directory -Force $OutputDirectory | Out-Null
 Copy-Item "$root/build/windows-publish/PaydayGlow.exe" $OutputDirectory -Force
 Copy-Item "$PSScriptRoot/README-Windows.txt" "$OutputDirectory/开始使用.txt" -Force
 Copy-Item "$PSScriptRoot/THIRD-PARTY-NOTICES.txt" $OutputDirectory -Force
+Copy-Item "$root/docs/licenses/*.TXT" $OutputDirectory -Force
 # Bundle the exact runtime notices and license from the restored runtime packages.
 $nuget = if ($env:NUGET_PACKAGES) { $env:NUGET_PACKAGES } else { Join-Path $env:USERPROFILE ".nuget/packages" }
 foreach ($name in @("microsoft.netcore.app.runtime.win-x64", "microsoft.windowsdesktop.app.runtime.win-x64")) {

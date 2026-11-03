@@ -30,7 +30,9 @@ Windows 构建机安装 .NET 10 SDK 后：
 
 输出在 `dist/PaydayGlow-Windows-x64/`。仓库的 `Windows portable package` GitHub Actions 在 Windows 环境构建并启动实际发布的 EXE，运行计算/存储检查与原生窗口检查，并提供便携包和截图报告。开发用 `--smoke-test` 参数只使用隔离设置和示例时钟，正常双击使用系统真实时间。
 
-[Windows 使用说明](Windows/README-Windows.txt) · [Windows 验证边界](docs/windows-validation.md)
+[Windows 使用说明](Windows/README-Windows.txt) · [Windows 验证边界与实际结果](docs/windows-validation.md)
+
+![Windows 原生卡片，示例数据](docs/images/windows-card.png)
 
 ## macOS build and run
 

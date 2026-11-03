@@ -20,3 +20,16 @@
 - Windows 设置只存本机的 `%LOCALAPPDATA%\PaydayGlow`；不从开发 Mac 导入工资或作息。不上传个人数据。
 - .NET 单文件、自带运行环境的发布机制参考 [Microsoft 文档](https://learn.microsoft.com/en-us/dotnet/core/deploying/single-file/overview)。
 - 会话屏幕状态参考 [Microsoft Power Setting GUIDs](https://learn.microsoft.com/en-us/windows/win32/power/power-setting-guids)，使用交互式应用推荐的 `GUID_SESSION_DISPLAY_STATUS`，亮起和变暗都视为亮屏。
+
+## 2026-11-03 构建与实际启动结果
+
+- Windows 构建机 `windows-2025-vs2026`，系统报告 `Microsoft Windows NT 10.0.26100.0`，进程架构 X64。
+- 53 项计算/本机存储检查通过；最终发布方式为自带运行环境的单文件 `PaydayGlow.exe`。
+- 启动发布 EXE 后的 16 项原生检查全部通过，包括首次设置、设置持久化、齿轮按钮、透明置顶卡片、显示/隐藏、右下角定位、超时状态和祝贺弹窗。
+- 初次成功构建的原生计时检查：经过约 3.15 秒，收入从示例 ¥377.5275 增至 ¥377.5886，倒计时同步减少约 3.15 秒，增长量符合每秒工资。
+- Windows PNG 透明通道检查：背景 alpha 158/255，圆角外 alpha 0/255；是真正的半透明窗口，不是固定背景截图。
+- 设置页在首次渲染后补充明确背景和滚动区域；包含该改进的第二次 Windows 构建及全部检查也通过。
+- [Windows 构建与最终便携包](https://github.com/Danasia-h/payday-glow/actions/workflows/windows-portable.yml)；构建附件含实际截图和 JSON 报告，保存 30 天。本地交付 ZIP 另行保留。
+- 重新执行 Mac 版的 `zsh test.sh`，原有 46 项检查仍通过。
+
+上述结果是 Windows 构建机的原生启动验证，不等于朋友实体电脑、多屏幕与实际熄屏/唤醒均已验证。分享包仅含 EXE、使用说明与运行库许可，不含隔离测试设置或个人数据。

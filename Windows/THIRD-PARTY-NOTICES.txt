@@ -5,5 +5,5 @@ The self-contained package includes these runtimes; recipients do not need a sep
 WPF: https://github.com/dotnet/wpf
 Windows Forms: https://github.com/dotnet/winforms
 
-Their license and third-party notices are included alongside this file from the restored runtime packages where available.
+Their license and third-party notices are included alongside this file: the core runtime notices from the restored runtime package, and WPF / Windows Forms notices from Microsoft's official release/10.0 source branches.
 No external NuGet UI packages are used. Windows system fonts and APIs remain part of the user's Windows installation.
