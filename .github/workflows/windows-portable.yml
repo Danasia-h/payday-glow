@@ -1,0 +1,54 @@
+name: Windows portable package
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['Windows/**', '.github/workflows/windows-portable.yml']
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Test, build and package self-contained Windows EXE
+        shell: pwsh
+        run: ./Windows/build-windows.ps1
+      - name: Launch the actual packaged EXE and verify desktop behavior
+        shell: pwsh
+        run: |
+          $folder = Join-Path $PWD 'build/windows-smoke'
+          $exe = Join-Path $PWD 'dist/PaydayGlow-Windows-x64/PaydayGlow.exe'
+          $process = Start-Process -FilePath $exe -ArgumentList @('--smoke-test', "`"$folder`"") -PassThru
+          if (-not $process.WaitForExit(90000)) { $process.Kill(); throw 'Packaged EXE did not finish smoke test in 90 seconds' }
+          if ($process.ExitCode -ne 0) {
+            if (Test-Path "$folder/startup-error.txt") { Get-Content "$folder/startup-error.txt" }
+            if (Test-Path "$folder/smoke-report.json") { Get-Content "$folder/smoke-report.json" }
+            throw "Packaged EXE exit code: $($process.ExitCode)"
+          }
+          $report = Get-Content "$folder/smoke-report.json" -Raw | ConvertFrom-Json
+          if (-not $report.passed) { throw 'Desktop smoke test failed' }
+          Get-Content "$folder/smoke-report.json"
+          Get-FileHash $exe -Algorithm SHA256 | Format-List
+      - name: Upload ready-to-send portable package
+        uses: actions/upload-artifact@v4
+        with:
+          name: PaydayGlow-Windows-x64
+          path: dist/PaydayGlow-Windows-x64/*
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload test report and Windows screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-verification
+          path: |
+            build/windows-smoke/*.png
+            build/windows-smoke/*.json
+            build/windows-smoke/startup-error.txt
+          if-no-files-found: warn
+          retention-days: 30

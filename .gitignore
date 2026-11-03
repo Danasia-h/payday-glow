@@ -4,6 +4,8 @@
 /work/
 /outputs/
 /dist/
+**/bin/
+**/obj/
 DerivedData/
 .swiftpm/
 

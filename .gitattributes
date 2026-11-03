@@ -5,3 +5,7 @@
 *.json text eol=lf
 *.png binary
 *.icns binary
+*.cs text eol=lf
+*.csproj text eol=lf
+*.ps1 text eol=crlf
+*.ico binary
